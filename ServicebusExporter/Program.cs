@@ -24,9 +24,8 @@ namespace ServicebusExporter
             Gauge jobsInQueue = Metrics.CreateGauge("myapp_jobs_queued", "Number of jobs waiting for processing in the queue.", new []{"testa"});
             
 
-            var server = new MetricServer(hostname: "localhost", port: 1234);
-            
-            server.Start();
+            //var server = new MetricServer(hostname: "localhost", port: 1234);
+            //server.Start();
 
             var azureCredentials = SdkContext.AzureCredentialsFactory.FromServicePrincipal(_clientId, _clientSecret, _tenantId, AzureEnvironment.AzureGlobalCloud); 
 
