@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29503.13
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServicebusExporter", "ServicebusExporter\ServicebusExporter.csproj", "{2AEE24D7-EF80-4290-9BE5-2D6AB35DC7BD}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2AEE24D7-EF80-4290-9BE5-2D6AB35DC7BD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2AEE24D7-EF80-4290-9BE5-2D6AB35DC7BD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2AEE24D7-EF80-4290-9BE5-2D6AB35DC7BD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2AEE24D7-EF80-4290-9BE5-2D6AB35DC7BD}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {A9239D19-1A0E-4467-85E2-92D1EA1A215C}
+	EndGlobalSection
+EndGlobal
