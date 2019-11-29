@@ -3,9 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29503.13
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServicebusExporter", "ServicebusExporter\ServicebusExporter.csproj", "{2AEE24D7-EF80-4290-9BE5-2D6AB35DC7BD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ServicebusExporter", "ServicebusExporter\ServicebusExporter.csproj", "{2AEE24D7-EF80-4290-9BE5-2D6AB35DC7BD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Servicebus-exporter", "Servicebus-exporter\Servicebus-exporter.csproj", "{9503B91F-31FF-47C1-97B4-18AEB5A2261E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Servicebus-exporter", "Servicebus-exporter\Servicebus-exporter.csproj", "{9503B91F-31FF-47C1-97B4-18AEB5A2261E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApplication1", "WebApplication1\WebApplication1.csproj", "{2164468C-38A6-4EE1-B156-BDDF6A7D285F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{9503B91F-31FF-47C1-97B4-18AEB5A2261E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9503B91F-31FF-47C1-97B4-18AEB5A2261E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9503B91F-31FF-47C1-97B4-18AEB5A2261E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2164468C-38A6-4EE1-B156-BDDF6A7D285F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2164468C-38A6-4EE1-B156-BDDF6A7D285F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2164468C-38A6-4EE1-B156-BDDF6A7D285F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2164468C-38A6-4EE1-B156-BDDF6A7D285F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

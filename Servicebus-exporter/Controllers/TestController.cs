@@ -4,13 +4,13 @@ using Microsoft.Azure.Management.ResourceManager.Fluent;
 using Microsoft.Azure.Management.ServiceBus.Fluent;
 using Prometheus;
 using Servicebus_exporter.Interfaces;
+using Servicebus_exporter.Models;
 
 namespace Servicebus_exporter.Controllers
 {
-    public class MetricsController : Controller
+    public class TestController : Controller
     {
         private readonly IQueueService _queueService;
-
         private static string _clientId = "b2be284a-e99e-4b29-b4f0-8855558e5334";
         private static string _clientSecret = "Welkom01";
         private static string _tenantId = "208cebd9-57bb-4455-9d1c-478abebe72b6";
@@ -20,7 +20,7 @@ namespace Servicebus_exporter.Controllers
 
         private IServiceBusNamespace _namespace;
 
-        public MetricsController(IQueueService queueService)
+        public TestController(IQueueService queueService)
         {
             _queueService = queueService;
             Metrics.SuppressDefaultMetrics();
@@ -33,24 +33,35 @@ namespace Servicebus_exporter.Controllers
 
         public async Task<string> Index()
         {
-            var queueMetrics = _queueService.CreateMetricsAsync(_namespace);
+            var queueMetrics = await _queueService.CreateMetricsAsync(_namespace);
 
-            
-
-            //topics
-            var topics = await _namespace.Topics.ListAsync();
-            foreach (var topic in topics)
+            foreach (var queueMetric in queueMetrics)
             {
-                var subscription = topic.Subscriptions;
-                var subscriptions = await subscription.ListAsync();
-                foreach (var subscription1 in subscriptions)
-                {
-                    var messageCount = subscription1.MessageCount;
-                }
+                CreateGaugeMetric(queueMetric);
             }
 
 
+            //topics
+            //var topics = await _namespace.Topics.ListAsync();
+            //foreach (var topic in topics)
+            //{
+            //    var subscription = topic.Subscriptions;
+            //    var subscriptions = await subscription.ListAsync();
+            //    foreach (var subscription1 in subscriptions)
+            //    {
+            //        var messageCount = subscription1.MessageCount;
+            //    }
+            //}
+
+
             return "Demo";
+        }
+
+        private void CreateGaugeMetric(GaugeModel queueMetric)
+        {
+            var gauge = Metrics.CreateGauge(queueMetric.Name, queueMetric.Help, queueMetric.Labels);
+            gauge.Labels(queueMetric.LabelValues);
+            gauge.Inc();
         }
     }
 }
