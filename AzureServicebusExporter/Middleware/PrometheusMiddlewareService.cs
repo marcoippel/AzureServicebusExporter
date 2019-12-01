@@ -12,7 +12,7 @@ using Prometheus;
 
 namespace AzureServicebusExporter.Middleware
 {
-    public static class PrometheusMiddleware
+    public class PrometheusMiddlewareService : IPrometheusMiddlewareService
     {
         private static string _clientId = "b2be284a-e99e-4b29-b4f0-8855558e5334";
         private static string _clientSecret = "Welkom01";
@@ -21,7 +21,7 @@ namespace AzureServicebusExporter.Middleware
         private static string _resourceGroupName = "Swarm";
         private static string _resourceName = "dockerswarm";
 
-        public static Func<HttpContext, Func<Task>, Task> Get(IApplicationBuilder app)
+        public Func<HttpContext, Func<Task>, Task> Get(IApplicationBuilder app)
         {
             Metrics.SuppressDefaultMetrics();
 

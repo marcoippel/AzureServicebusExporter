@@ -1,17 +1,29 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using AzureServicebusExporter.Helpers;
 using AzureServicebusExporter.Interfaces;
 using AzureServicebusExporter.Models;
 using Microsoft.Azure.Management.ResourceManager.Fluent.Core;
 using Microsoft.Azure.Management.ServiceBus.Fluent;
+using Microsoft.Extensions.Logging;
 
 namespace AzureServicebusExporter.Services
 {
     public class QueueService : IQueueService
     {
+        private readonly ILogger<QueueService> _logger;
+
+        public QueueService(ILogger<QueueService> logger)
+        {
+            _logger = logger;
+        }
+
         public async Task<List<GaugeModel>> CreateMetricsAsync(IServiceBusNamespace serviceBusNamespace)
         {
+            Stopwatch sw = new Stopwatch();
+            sw.Start();
+
             List<GaugeModel> gaugeModels = new List<GaugeModel>();
             var queues = await GetQueuesAsync(serviceBusNamespace);
             foreach (var queue in queues)
@@ -23,6 +35,9 @@ namespace AzureServicebusExporter.Services
                 gaugeModels.Add(GaugeHelper.Create("servicebus_queue_transfer_dead_letter_messages", "The number of messages transferred into dead letters.", new[] { "name" }, new[] { queue.Name }, queue.TransferDeadLetterMessageCount));
                 gaugeModels.Add(GaugeHelper.Create("servicebus_queue_transfer_messages", "The number of messages transferred to another queue, topic, or subscription.", new[] { "name" }, new[] { queue.Name }, queue.TransferMessageCount));
             }
+
+            sw.Stop();
+            _logger.Log(LogLevel.Information, $"QueueService: {sw.ElapsedMilliseconds}"); 
 
             return gaugeModels;
         }
