@@ -1,4 +1,4 @@
-﻿namespace Servicebus_exporter.Models
+﻿namespace AzureServicebusExporter.Models
 {
     public class GaugeModel
     {

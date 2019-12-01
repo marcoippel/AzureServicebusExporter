@@ -1,12 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using AzureServicebusExporter.Models;
 using Microsoft.Azure.Management.ServiceBus.Fluent;
-using Servicebus_exporter.Models;
-using Servicebus_exporter.Services;
 
-namespace Servicebus_exporter.Interfaces
+namespace AzureServicebusExporter.Interfaces
 {
-    public interface IQueueService
+    public interface ISubscriptionService
     {
         Task<List<GaugeModel>> CreateMetricsAsync(IServiceBusNamespace serviceBusNamespace);
     }

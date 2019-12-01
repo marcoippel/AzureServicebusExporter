@@ -1,16 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using AzureServicebusExporter.Interfaces;
+using AzureServicebusExporter.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Azure.Management.ResourceManager.Fluent;
 using Microsoft.Azure.Management.ServiceBus.Fluent;
 using Microsoft.Extensions.DependencyInjection;
 using Prometheus;
-using WebApplication1.Interfaces;
-using WebApplication1.Models;
 
-namespace WebApplication1.Middleware
+namespace AzureServicebusExporter.Middleware
 {
     public static class PrometheusMiddleware
     {
@@ -43,6 +43,9 @@ namespace WebApplication1.Middleware
 
                 var topicService = app.ApplicationServices.GetService<ITopicService>();
                 gaugeModels.AddRange(topicService.CreateMetricsAsync(@namespace).GetAwaiter().GetResult());
+
+                var subscriptionService = app.ApplicationServices.GetService<ISubscriptionService>();
+                gaugeModels.AddRange(subscriptionService.CreateMetricsAsync(@namespace).GetAwaiter().GetResult());
 
                 foreach (var gaugeModel in gaugeModels)
                 {

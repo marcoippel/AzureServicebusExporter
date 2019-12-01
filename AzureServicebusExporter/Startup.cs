@@ -1,13 +1,13 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using AzureServicebusExporter.Interfaces;
+using AzureServicebusExporter.Middleware;
+using AzureServicebusExporter.Services;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Prometheus;
-using WebApplication1.Interfaces;
-using WebApplication1.Middleware;
-using WebApplication1.Services;
 
-namespace WebApplication1
+namespace AzureServicebusExporter
 {
     public class Startup
     {
@@ -23,6 +23,7 @@ namespace WebApplication1
         {
             services.AddTransient<IQueueService, QueueService>();
             services.AddTransient<ITopicService, TopicService>();
+            services.AddTransient<ISubscriptionService, SubscriptionService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

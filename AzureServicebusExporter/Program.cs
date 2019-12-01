@@ -1,7 +1,7 @@
-using Microsoft.AspNetCore;
+﻿using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 
-namespace Servicebus_exporter
+namespace AzureServicebusExporter
 {
     public class Program
     {

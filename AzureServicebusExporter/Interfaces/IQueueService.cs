@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using AzureServicebusExporter.Models;
 using Microsoft.Azure.Management.ServiceBus.Fluent;
-using WebApplication1.Models;
 
-namespace WebApplication1.Interfaces
+namespace AzureServicebusExporter.Interfaces
 {
     public interface IQueueService
     {
