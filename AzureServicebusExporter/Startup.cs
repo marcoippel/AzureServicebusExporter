@@ -25,7 +25,7 @@ namespace AzureServicebusExporter
             services.AddTransient<IQueueService, QueueService>();
             services.AddTransient<ITopicService, TopicService>();
             services.AddTransient<ISubscriptionService, SubscriptionService>();
-            services.AddTransient<IPrometheusMiddlewareService, PrometheusMiddlewareService>();
+            services.AddSingleton<IPrometheusMiddlewareService, PrometheusMiddlewareService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

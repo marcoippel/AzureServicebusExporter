@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 
-namespace AzureServicebusExporter.Middleware
+namespace AzureServicebusExporter.Interfaces
 {
     public interface IPrometheusMiddlewareService
     {
