@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using AzureServicebusExporter.Interfaces;
 using AzureServicebusExporter.Models;
@@ -12,15 +13,12 @@ using Prometheus;
 
 namespace AzureServicebusExporter.Middleware
 {
-
-    // https://www.florinciubotariu.com/retrieving-number-of-messages-in-service-bus-in-net-core/
-
     public class PrometheusMiddlewareService : IPrometheusMiddlewareService
     {
         private readonly string _clientId = "b2be284a-e99e-4b29-b4f0-8855558e5334";
         private readonly string _clientSecret = "Welkom01";
         private readonly string _tenantId = "208cebd9-57bb-4455-9d1c-478abebe72b6";
-        private readonly string _subscriptionId = "331e081a-586a-497a-befd-ee049a31d234";
+        private readonly string _subscriptionId = "9a683748-58c6-48fc-a0c1-920a1004270f";
         private readonly string _resourceGroupName = "Swarm";
         private readonly string _resourceName = "dockerswarm";
 
@@ -36,6 +34,8 @@ namespace AzureServicebusExporter.Middleware
                 {
                     return next();
                 }
+                Stopwatch sw = new Stopwatch();
+                sw.Start();
 
                 var gaugeModels = new List<GaugeModel>();
                 
@@ -54,6 +54,15 @@ namespace AzureServicebusExporter.Middleware
 
                 var subscriptionService = app.ApplicationServices.GetService<ISubscriptionService>();
                 gaugeModels.AddRange(subscriptionService.CreateMetricsAsync(_namespace).GetAwaiter().GetResult());
+
+
+                gaugeModels.Add(new GaugeModel()
+                {
+                    Name = "scrape_duration_milliseconds",
+                    Value = (sw.ElapsedMilliseconds),
+                    Help = "The duration of the scrape in seconds",
+                });
+                
 
                 foreach (var gaugeModel in gaugeModels)
                 {
