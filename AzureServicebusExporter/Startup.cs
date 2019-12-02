@@ -25,7 +25,6 @@ namespace AzureServicebusExporter
             services.AddTransient<IQueueService, QueueService>();
             services.AddTransient<ITopicService, TopicService>();
             services.AddTransient<ISubscriptionService, SubscriptionService>();
-            services.AddTransient<IPrometheusMiddlewareService, PrometheusMiddlewareService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -37,14 +36,13 @@ namespace AzureServicebusExporter
             }
             else
             {
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
 
-            var prometheusMiddlewareService = app.ApplicationServices.GetService<IPrometheusMiddlewareService>();
+            Metrics.SuppressDefaultMetrics();
 
-            app.Use(prometheusMiddlewareService.Get(app));
             app.UseHttpsRedirection();
+            app.UsePrometheusMiddleware();
             app.UseMetricServer();
         }
     }
