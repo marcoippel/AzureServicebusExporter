@@ -12,6 +12,9 @@ using Prometheus;
 
 namespace AzureServicebusExporter.Middleware
 {
+
+    // https://www.florinciubotariu.com/retrieving-number-of-messages-in-service-bus-in-net-core/
+
     public class PrometheusMiddlewareService : IPrometheusMiddlewareService
     {
         private readonly string _clientId = "b2be284a-e99e-4b29-b4f0-8855558e5334";
