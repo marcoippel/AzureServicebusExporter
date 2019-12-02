@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using System.Diagnostics;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using AzureServicebusExporter.Helpers;
 using AzureServicebusExporter.Interfaces;
@@ -18,13 +18,14 @@ namespace AzureServicebusExporter.Services
         {
             _logger = logger;
         }
-
         public async Task<List<GaugeModel>> CreateMetricsAsync(IServiceBusNamespace serviceBusNamespace)
         {
             List<GaugeModel> gaugeModels = new List<GaugeModel>();
             var queues = await GetQueuesAsync(serviceBusNamespace);
             foreach (var queue in queues)
             {
+                _logger.LogTrace($"{DateTime.Now:o} - Create gaugemodel for queue: {queue.Name}");
+
                 gaugeModels.Add(GaugeHelper.Create("servicebus_queue_active_messages", "The number of messages in the queue.", new[] { "name" }, new[] { queue.Name }, queue.MessageCount));
                 gaugeModels.Add(GaugeHelper.Create("servicebus_queue_scheduled_messages", "The number of messages sent to the queue that are yet to be released for consumption.", new[] { "name" }, new[] { queue.Name }, queue.ScheduledMessageCount));
                 gaugeModels.Add(GaugeHelper.Create("servicebus_queue_dead_letter_messages", "The number of messages in the dead-letter queue.", new[] { "name" }, new[] { queue.Name }, queue.DeadLetterMessageCount));

@@ -14,6 +14,7 @@ namespace AzureServicebusExporter
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+            
         }
 
         public IConfiguration Configuration { get; }
@@ -25,6 +26,7 @@ namespace AzureServicebusExporter
             services.AddTransient<IQueueService, QueueService>();
             services.AddTransient<ITopicService, TopicService>();
             services.AddTransient<ISubscriptionService, SubscriptionService>();
+            services.Configure<AzureServicebusExporterConfig>(Configuration.GetSection("AzureServicebusExporter"));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

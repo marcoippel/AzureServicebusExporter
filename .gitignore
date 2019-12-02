@@ -378,3 +378,4 @@ MigrationBackup/
 .sonarlint/
 
 # End of https://www.gitignore.io/api/csharp,sonarqube,dotnetcore,visualstudio
+/AzureServicebusExporter/appsettings.Development.json

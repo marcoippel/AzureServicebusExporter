@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using System.Diagnostics;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using AzureServicebusExporter.Helpers;
 using AzureServicebusExporter.Interfaces;
@@ -26,6 +26,8 @@ namespace AzureServicebusExporter.Services
 
             foreach (var topic in topics)
             {
+                _logger.LogTrace($"{DateTime.Now:o} - Create gaugemodel for topic: {topic.Name}");
+
                 gaugeModels.Add(GaugeHelper.Create("servicebus_topic_active_messages", "The number of active messages in the topic.", new[] { "name" }, new[] { topic.Name }, topic.ActiveMessageCount));
                 gaugeModels.Add(GaugeHelper.Create("servicebus_topic_scheduled_messages", "The number of messages sent to the topic that are yet to be released for consumption.", new[] { "name" }, new[] { topic.Name }, topic.ScheduledMessageCount));
                 gaugeModels.Add(GaugeHelper.Create("servicebus_topic_dead_letter_messages", "The number of messages in the dead-letter topic.", new[] { "name" }, new[] { topic.Name }, topic.DeadLetterMessageCount));
