@@ -1,4 +1,4 @@
-﻿namespace AzureServicebusExporter
+﻿namespace AzureServicebusExporter.Models
 {
     public class AzureServicebusExporterConfig
     {

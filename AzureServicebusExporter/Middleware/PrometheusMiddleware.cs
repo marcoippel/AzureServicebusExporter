@@ -24,7 +24,8 @@ namespace AzureServicebusExporter.Middleware
         private readonly IOptions<AzureServicebusExporterConfig> _config;
         private IServiceBusNamespace _namespace;
 
-        public PrometheusMiddleware(RequestDelegate next, 
+        public PrometheusMiddleware(
+            RequestDelegate next, 
             ILogger<PrometheusMiddleware> logger, 
             IQueueService queueService, 
             ITopicService topicService, 
@@ -49,6 +50,8 @@ namespace AzureServicebusExporter.Middleware
                 var status = 1;
                 try
                 {
+                    //todo: validate settings
+
                     Stopwatch sw = new Stopwatch();
                     sw.Start();
 
