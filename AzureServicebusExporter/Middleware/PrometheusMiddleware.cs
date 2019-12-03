@@ -6,7 +6,6 @@ using AzureServicebusExporter.Interfaces;
 using AzureServicebusExporter.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
-using Microsoft.Azure.Management.ResourceManager.Fluent;
 using Microsoft.Azure.Management.ServiceBus.Fluent;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -21,6 +20,7 @@ namespace AzureServicebusExporter.Middleware
         private readonly IQueueService _queueService;
         private readonly ITopicService _topicService;
         private readonly ISubscriptionService _subscriptionService;
+        private readonly IAzureAuthenticationService _authenticationService;
         private readonly IOptions<AzureServicebusExporterConfig> _config;
         private IServiceBusNamespace _namespace;
 
@@ -30,6 +30,7 @@ namespace AzureServicebusExporter.Middleware
             IQueueService queueService, 
             ITopicService topicService, 
             ISubscriptionService subscriptionService,
+            IAzureAuthenticationService authenticationService,
             IOptions<AzureServicebusExporterConfig> config)
         {
             
@@ -38,6 +39,7 @@ namespace AzureServicebusExporter.Middleware
             _queueService = queueService;
             _topicService = topicService;
             _subscriptionService = subscriptionService;
+            _authenticationService = authenticationService;
             _config = config;
         }
 
@@ -45,7 +47,7 @@ namespace AzureServicebusExporter.Middleware
         {
             if (httpContext.Request.Path.HasValue && httpContext.Request.Path.Value == "/metrics")
             {
-                _logger.LogTrace($"{DateTime.Now:o} - Start scraping");
+                _logger.LogTrace("Start scraping");
 
                 var status = 1;
                 try
@@ -59,8 +61,7 @@ namespace AzureServicebusExporter.Middleware
                     
                     if (_namespace == null)
                     {
-                        var azureCredentials = SdkContext.AzureCredentialsFactory.FromServicePrincipal(_config.Value.ClientId, _config.Value.ClientSecret, _config.Value.TenantId,AzureEnvironment.AzureGlobalCloud);
-                        var serviceBusManager = ServiceBusManager.Authenticate(azureCredentials, _config.Value.SubscriptionId);
+                        var serviceBusManager = _authenticationService.Authenticate(_config.Value.ClientId, _config.Value.ClientSecret, _config.Value.TenantId, _config.Value.SubscriptionId);
                         _namespace = serviceBusManager.Namespaces.GetByResourceGroup(_config.Value.ResourceGroupName, _config.Value.ResourceName);
                     }
 
@@ -88,15 +89,14 @@ namespace AzureServicebusExporter.Middleware
                 catch (Exception e)
                 {
                     status = 0;
-                    _logger.LogError($"{DateTime.Now:o} - {e.Message}");
+                    _logger.LogError(e.Message);
                 }
                 finally
                 {
-                    var gauge = Metrics.CreateGauge("azureservicebusexporter_up",
-                        "The status if the scrape was successful", new GaugeConfiguration());
+                    var gauge = Metrics.CreateGauge("azureservicebusexporter_up","The status if the scrape was successful", new GaugeConfiguration());
                     gauge.Set(status);
 
-                    _logger.LogTrace($"{DateTime.Now:o} - End scraping");
+                    _logger.LogTrace($"End scraping");
                 }
             }
 

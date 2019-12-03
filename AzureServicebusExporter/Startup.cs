@@ -26,6 +26,7 @@ namespace AzureServicebusExporter
             services.AddTransient<IQueueService, QueueService>();
             services.AddTransient<ITopicService, TopicService>();
             services.AddTransient<ISubscriptionService, SubscriptionService>();
+            services.AddTransient<IAzureAuthenticationService, AzureAuthenticationService>();
             services.Configure<AzureServicebusExporterConfig>(Configuration.GetSection("AzureServicebusExporter"));
         }
 
