@@ -52,7 +52,12 @@ namespace AzureServicebusExporter.Middleware
                 var status = 1;
                 try
                 {
-                    //todo: validate settings
+                    GuardClauses.IsNotNullOrEmpty(_config.Value.ClientId, nameof(_config.Value.ClientId));
+                    GuardClauses.IsNotNullOrEmpty(_config.Value.ClientSecret, nameof(_config.Value.ClientSecret));
+                    GuardClauses.IsNotNullOrEmpty(_config.Value.TenantId, nameof(_config.Value.TenantId));
+                    GuardClauses.IsNotNullOrEmpty(_config.Value.SubscriptionId, nameof(_config.Value.SubscriptionId));
+                    GuardClauses.IsNotNullOrEmpty(_config.Value.ResourceGroupName, nameof(_config.Value.ResourceGroupName));
+                    GuardClauses.IsNotNullOrEmpty(_config.Value.ResourceName, nameof(_config.Value.ResourceName));
 
                     Stopwatch sw = new Stopwatch();
                     sw.Start();
