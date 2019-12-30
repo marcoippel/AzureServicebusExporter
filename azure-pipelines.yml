@@ -41,29 +41,7 @@ steps:
   inputs:
     command: test
     projects: '**/*Tests/*.csproj'
-    arguments: '--configuration $(buildConfiguration) --collect:"Code Coverage"'
-
-- task: PowerShell@2
-  inputs:
-    targetType: 'inline'
-    script: |
-      #PARAM(
-      #    [string]$workingdir
-      #)
-      
-      $ver = (Get-ChildItem $env:USERPROFILE\.nuget\packages\Microsoft.CodeCoverage | Select-Object -Property Name | Sort-Object -Descending | Select-Object -First 1).Name
-      
-      #cd $workingdir
-       
-      Get-ChildItem -Recurse -Filter "*.coverage" | % {
-      Write-Host "Found file: " + $_.FullName
-      $outfile = "$([System.IO.Path]::GetFileNameWithoutExtension($_.FullName)).coveragexml"
-      $output = [System.IO.Path]::Combine([System.IO.Path]::GetDirectoryName($_.FullName), $outfile)
-      "Analyse '$($_.FullName)' with output '$output'..."
-      . $env:USERPROFILE\.nuget\packages\microsoft.codecoverage\$ver\build\netstandard1.0\CodeCoverage\CodeCoverage.exe analyze /output:$output $_.FullName
-      }
-      "Done"
-    workingDirectory: '$(Build.SourcesDirectory)'
+    arguments: '--configuration $(buildConfiguration) --results-directory d:\a\1\TestResults'
 
 - task: SonarCloudAnalyze@1
 
