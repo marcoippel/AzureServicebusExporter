@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using AzureServicebusExporter.Interfaces;
 using AzureServicebusExporter.Models;
@@ -12,6 +13,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Prometheus;
 
+[assembly: InternalsVisibleTo("AzureServicebusExporter.Tests")]
 namespace AzureServicebusExporter.Middleware
 {
     public class PrometheusMiddleware
@@ -22,7 +24,7 @@ namespace AzureServicebusExporter.Middleware
         private readonly ITopicService _topicService;
         private readonly ISubscriptionService _subscriptionService;
         private readonly IOptions<AzureServicebusExporterConfig> _config;
-        private IServiceBusNamespace _namespace;
+        private IServiceBusNamespace _serviceBusNamespace;
 
         public PrometheusMiddleware(
             RequestDelegate next, 
@@ -30,7 +32,8 @@ namespace AzureServicebusExporter.Middleware
             IQueueService queueService, 
             ITopicService topicService, 
             ISubscriptionService subscriptionService,
-            IOptions<AzureServicebusExporterConfig> config)
+            IOptions<AzureServicebusExporterConfig> config,
+            IServiceBusNamespace serviceBusNamespace = null)
         {
             
             _next = next;
@@ -39,6 +42,7 @@ namespace AzureServicebusExporter.Middleware
             _topicService = topicService;
             _subscriptionService = subscriptionService;
             _config = config;
+            _serviceBusNamespace = serviceBusNamespace;
         }
 
         public async Task Invoke(HttpContext httpContext)
@@ -57,16 +61,16 @@ namespace AzureServicebusExporter.Middleware
 
                     var gaugeModels = new List<GaugeModel>();
                     
-                    if (_namespace == null)
+                    if (_serviceBusNamespace == null)
                     {
                         var azureCredentials = SdkContext.AzureCredentialsFactory.FromServicePrincipal(_config.Value.ClientId, _config.Value.ClientSecret, _config.Value.TenantId,AzureEnvironment.AzureGlobalCloud);
                         var serviceBusManager = ServiceBusManager.Authenticate(azureCredentials, _config.Value.SubscriptionId);
-                        _namespace = serviceBusManager.Namespaces.GetByResourceGroup(_config.Value.ResourceGroupName, _config.Value.ResourceName);
+                        _serviceBusNamespace = serviceBusManager.Namespaces.GetByResourceGroup(_config.Value.ResourceGroupName, _config.Value.ResourceName);
                     }
 
-                    gaugeModels.AddRange(_queueService.CreateMetricsAsync(_namespace).GetAwaiter().GetResult());
-                    gaugeModels.AddRange(_topicService.CreateMetricsAsync(_namespace).GetAwaiter().GetResult());
-                    gaugeModels.AddRange(_subscriptionService.CreateMetricsAsync(_namespace).GetAwaiter().GetResult());
+                    gaugeModels.AddRange(_queueService.CreateMetricsAsync(_serviceBusNamespace).GetAwaiter().GetResult());
+                    gaugeModels.AddRange(_topicService.CreateMetricsAsync(_serviceBusNamespace).GetAwaiter().GetResult());
+                    gaugeModels.AddRange(_subscriptionService.CreateMetricsAsync(_serviceBusNamespace).GetAwaiter().GetResult());
 
                     gaugeModels.Add(new GaugeModel()
                     {
