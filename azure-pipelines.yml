@@ -41,7 +41,7 @@ steps:
   inputs:
     command: test
     projects: '**/*Tests/*.csproj'
-    arguments: '--configuration $(buildConfiguration) --results-directory d:\a\1\TestResults'
+    arguments: '--configuration $(buildConfiguration)'
 
 - task: SonarCloudAnalyze@1
 
