@@ -15,6 +15,14 @@ variables:
   buildConfiguration: 'Release'
 
 steps:
+- task: SonarCloudPrepare@1
+  inputs:
+    SonarCloud: 'Sonarcloud'
+    organization: 'ippelsoft'
+    scannerMode: 'MSBuild'
+    projectKey: 'Azure_Servicebus_Exporter'
+    projectName: 'Azure Servicebus Exporter'
+
 - task: NuGetToolInstaller@1
 
 - task: NuGetCommand@2
