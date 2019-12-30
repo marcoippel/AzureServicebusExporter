@@ -39,9 +39,10 @@ steps:
 
 - task: DotNetCoreCLI@2
   inputs:
-    command: test
+    command: 'custom'
     projects: '**/*Tests/*.csproj'
-    arguments: '--configuration $(buildConfiguration)'
+    custom: 'test'
+    arguments: '--logger trx --results-directory d:\a\1\TestResults --configuration $(buildConfiguration)'
 
 - task: SonarCloudAnalyze@1
 
