@@ -46,13 +46,13 @@ steps:
   inputs:
     targetType: 'inline'
     script: |
-      PARAM(
-          [string]$workingdir
-      )
+      #PARAM(
+      #    [string]$workingdir
+      #)
       
       $ver = (Get-ChildItem $env:USERPROFILE\.nuget\packages\Microsoft.CodeCoverage | Select-Object -Property Name | Sort-Object -Descending | Select-Object -First 1).Name
       
-      cd $workingdir
+      #cd $workingdir
        
       Get-ChildItem -Recurse -Filter "*.coverage" | % {
       Write-Host "Found file: " + $_.FullName
@@ -62,10 +62,19 @@ steps:
       . $env:USERPROFILE\.nuget\packages\microsoft.codecoverage\$ver\build\netstandard1.0\CodeCoverage\CodeCoverage.exe analyze /output:$output $_.FullName
       }
       "Done"
-
+    workingDirectory: '$(Build.SourcesDirectory)'
 
 - task: SonarCloudAnalyze@1
 
 - task: SonarCloudPublish@1
   inputs:
     pollingTimeoutSec: '30'
+
+- task: PowerShell@2
+  inputs:
+    targetType: 'inline'
+    script: |
+      # Write your PowerShell commands here.
+      
+      Write-Host "Hello World"
+    workingDirectory: '$(Build.SourcesDirectory)'
