@@ -42,7 +42,7 @@ steps:
     command: 'custom'
     projects: '**/*Tests/*.csproj'
     custom: 'test'
-    arguments: '--logger trx --results-directory d:\a\1\TestResults --configuration $(buildConfiguration) /p:CollectCoverage=true'
+    arguments: '--logger trx --results-directory d:\a\1\TestResults --configuration $(buildConfiguration) --collect:"Code Coverage"'
 
 - task: SonarCloudAnalyze@1
 
