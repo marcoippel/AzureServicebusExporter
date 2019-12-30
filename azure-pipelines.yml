@@ -37,10 +37,12 @@ steps:
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
 
-- task: VSTest@2
+- task: DotNetCoreCLI@2
   inputs:
-    platform: '$(buildPlatform)'
-    configuration: '$(buildConfiguration)'
+    command: 'custom'
+    projects: '**/*Tests/*.csproj'
+    custom: 'test'
+    arguments: '--logger trx --results-directory d:\a\1\TestResults --configuration $(buildConfiguration) --collect:"Code Coverage"'
 
 - task: SonarCloudAnalyze@1
 
