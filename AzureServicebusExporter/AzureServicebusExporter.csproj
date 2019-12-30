@@ -8,6 +8,7 @@
     <ApplicationIcon />
     <OutputType>Exe</OutputType>
     <StartupObject />
+    <ProjectGuid>0CD52E58-A2E3-49DC-8237-E85F58F5EF28</ProjectGuid>
   </PropertyGroup>
 
   <ItemGroup>
