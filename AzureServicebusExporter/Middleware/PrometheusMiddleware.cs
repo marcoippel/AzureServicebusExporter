@@ -50,7 +50,7 @@ namespace AzureServicebusExporter.Middleware
             if (httpContext.Request.Path.HasValue && httpContext.Request.Path.Value == "/metrics")
             {
                 _logger.LogTrace($"{DateTime.Now:o} - Start scraping");
-
+                
                 var status = 1;
                 try
                 {

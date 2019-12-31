@@ -1,4 +1,5 @@
-﻿using AzureServicebusExporter.Interfaces;
+﻿using AzureServicebusExporter.Configuration;
+using AzureServicebusExporter.Interfaces;
 using AzureServicebusExporter.Middleware;
 using AzureServicebusExporter.Models;
 using AzureServicebusExporter.Services;
@@ -12,10 +13,19 @@ namespace AzureServicebusExporter
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        public Startup(IHostingEnvironment env)
         {
-            Configuration = configuration;
+            var builder = new ConfigurationBuilder()
+                .SetBasePath(env.ContentRootPath)
+                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+                .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
+                .AddEnvironmentVariables()
+                .AddDockerSecrets("C:\\temp\\secrets");
+            
+                Configuration = builder.Build();
         }
+
+        
 
         public IConfiguration Configuration { get; }
 
